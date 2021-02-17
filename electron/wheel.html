@@ -10,14 +10,52 @@
 </head>
 
 <body>
-    <canvas class="block" id="u344_img" src="./frontend/main/wheel_outer.png" alt="" width="377" height="377"></canvas>
+    <canvas id="u34wheel_img" alt="" width="377" height="377"></canvas>
+
     <script>
+        let theWheel = new Winwheel({
+            'numSegments': 4,            // Specify number of segments.
+            // 'outerRadius'       : 150,          // Set outer radius so wheel fits inside the background.
+            'drawMode': 'image',      // drawMode must be set to image.
+            'canvasId': 'u34wheel_img',
+
+
+
+            'animation':                   // Specify the animation to use.
+            {
+                'type': 'spinToStop',
+                'duration': 5,             // Duration in seconds.
+                'spins': 8,             // Number of complete spins.
+                'callbackFinished': alertPrize
+            }
+        });
+
+        // Create new image object in memory.
+        let loadedImg = new Image();
+
+        // Create callback to execute once the image has finished loading.
+        loadedImg.onload = function () {
+            theWheel.wheelImage = loadedImg;    // Make wheelImage equal the loaded image object.
+            theWheel.draw();                    // Also call draw function to render the wheel.
+        }
+
+        // Set the image source, once complete this will trigger the onLoad callback (above).
+        loadedImg.src = "/frontend/main/wheel_outer.png";
+
+        // Called when the animation has finished.
+        function alertPrize(indicatedSegment) {
+            // Do basic alert of the segment text.
+            alert("The plane is " + indicatedSegment.text);
+        }
+    </script>
+
+    <!-- <script>
         var wheelSpinning = false;
         var theWheel = new Winwheel({
             'numSegments': 20,         // Specify number of segments.
             'drawMode': 'image',   // drawMode must be set to image.
-            'drawText': false,      // Need to set this true if want code-drawn text on image wheels.
-            'canvasId': 'u344_img',
+            'drawText': true,      // Need to set this true if want code-drawn text on image wheels.
+            'canvasId': 'u34wheel_img',
             'segments':                // Define segments.
                 [
                     { 'text': '4' },
@@ -49,7 +87,7 @@
                 'duration': 6,     // Duration in seconds.
                 'spins': 1,     // Number of complete spins.
                 'callbackFinished': spinstopped,
-                'clearTheCanvas': true,
+                // 'clearTheCanvas': true,
                 'callbackSound': playSound,   // Function to call when the tick sound is to be triggered.
                 'soundTrigger': 'pin'        // Specify pins are to trigger the sound, the other option is 'segment'.
             },
@@ -81,7 +119,7 @@
         }
 
         // Set the image source, once complete this will trigger the onLoad callback (above).
-        loadedImg.src = "./frontend/main/wheel_outer.png";
+        loadedImg.src = "frontend/main/wheel_outer.png";
 
 
         // Vars used by the code in this page to do power controls.
@@ -101,7 +139,11 @@
 
 
         }
-    </script>
+    </script> -->
 </body>
+<script>
+
+
+</script>
 
 </html>
