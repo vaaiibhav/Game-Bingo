@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginScreen">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@drawable/mainbackground">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_marginLeft="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:cropToPadding="false"
+            android:foregroundGravity="left"
+            app:srcCompat="@drawable/newbanner" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:gravity="right"
+            android:layout_marginLeft="450dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="Username" />
+
+            <EditText
+                android:id="@+id/et_login_email"
+                android:layout_width="190dp"
+                android:layout_height="30dp"
+                android:layout_alignStart="@+id/linearLayout2"
+                android:layout_alignLeft="@+id/linearLayout2"
+                android:layout_alignTop="@+id/linearLayout"
+                android:background="@drawable/edittextback"
+                android:alpha="0.5"
+                android:singleLine="true"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="Password"
+                android:gravity="center"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:id="@+id/et_login_pass"
+                android:layout_width="190dp"
+                android:layout_height="30dp"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:alpha="0.5"
+                android:background="@drawable/edittextback"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+
+            <ImageView
+                android:id="@+id/btn_login"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:background="@drawable/loginbutton"
+                android:layout_margin="15dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="3dp"
+            android:background="@drawable/exit"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="3dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom|right"
+            android:layout_marginRight="50dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="238dp"
+                android:layout_height="100dp"
+                android:background="@drawable/rulebox" />
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="45dp"
+                android:background="@drawable/alertbox" />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>
