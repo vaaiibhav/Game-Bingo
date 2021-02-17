@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/background">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- LEFT SIDE LAYOUT -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:id="@+id/topleft"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/textscore"/>
+
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:text="0"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/diaplayscore" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/texttime"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"/>
+
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/tv_timer"
+                    android:textColor="@color/black"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/diaplayscore"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:background="@drawable/chipsbackgroundleft"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/topleft">
+
+            <ImageView
+                android:id="@+id/btn_Coin10"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip10"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip20"/>
+
+            <ImageView
+                android:id="@+id/btn_Coin50"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip50"/>
+
+            <ImageView
+                android:id="@+id/btn_Coin100"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip100"/>
+
+        </LinearLayout>
+
+<!--        Right Side layout-->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:id="@+id/topright"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/textwinner" />
+
+                <TextView
+                    android:id="@+id/tv_winner"
+                    android:textColor="@color/black"
+                    android:text="0"
+                    android:gravity="center"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/diaplayscore" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/textlast10data" />
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/diaplayscore" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/topright"
+            android:gravity="right">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/chipsbackgroundright"
+            android:layout_below="@+id/top">
+
+            <ImageView
+                android:id="@+id/btn_Coin500"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip500"/>
+
+            <ImageView
+                android:id="@+id/btn_Coin1000"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip1000"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip2000"/>
+
+            <ImageView
+                android:id="@+id/btn_Coin5000"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:background="@drawable/chip5000"/>
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Wheel -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/consta">
+
+            <ImageView
+                android:layout_width="225dp"
+                android:layout_height="219dp"
+                android:background="@drawable/wheel_outer"
+                android:foregroundGravity="right"
+                android:id="@+id/iv_spinwheel"
+                app:layout_constraintLeft_toLeftOf="@id/consta"
+                app:layout_constraintRight_toRightOf="@id/consta"
+                app:layout_constraintTop_toTopOf="@id/consta" />
+
+            <ImageView
+                android:layout_width="131dp"
+                android:layout_height="121dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/wheel_inner"
+                android:foregroundGravity="right"
+                app:layout_constraintLeft_toLeftOf="@id/consta"
+                app:layout_constraintRight_toRightOf="@id/consta"
+                app:layout_constraintTop_toTopOf="@id/consta" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="87dp"
+                android:background="@drawable/funtargetarc"
+                android:id="@+id/label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.726" />
+
+            <ImageView
+                android:layout_width="388dp"
+                android:layout_height="164dp"
+                android:layout_marginTop="95dp"
+                android:background="@drawable/treasurechest"
+                app:layout_constraintBottom_toTopOf="@+id/label"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom"
+            android:weightSum="10"
+            android:layout_marginBottom="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_bet0"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet1"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet2"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet3"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet4"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet5"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet6"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet7"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet8"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+            <TextView
+                android:id="@+id/tv_bet9"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/antique_box"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom"
+            android:weightSum="10"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/btn_bet0"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red0"/>
+
+            <ImageView
+                android:id="@+id/btn_bet1"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red1"/>
+
+            <ImageView
+                android:id="@+id/btn_bet2"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red2"/>
+
+            <ImageView
+                android:id="@+id/btn_bet3"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red3"/>
+
+            <ImageView
+                android:id="@+id/btn_bet4"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red4"/>
+
+            <ImageView
+                android:id="@+id/btn_bet5"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red5"/>
+
+            <ImageView
+                android:id="@+id/btn_bet6"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red6"/>
+
+            <ImageView
+                android:id="@+id/btn_bet7"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red7"/>
+
+            <ImageView
+                android:id="@+id/btn_bet8"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red8"/>
+
+            <ImageView
+                android:id="@+id/btn_bet9"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_red9"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="bottom"
+            android:weightSum="3"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/leftbottombutton_red"/>
+
+
+                <ImageView
+                    android:layout_width="500dp"
+                    android:layout_height="15dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bottomstatusdisplaybar"/>
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/exitbutton_red"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="75dp">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/printbutton_red" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:background="@drawable/cancelbutton_red" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
