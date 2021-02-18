@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body background="main-background.png" >
+
+    <div style="float: right;">
+        <img src="close-button.png" alt="">
+    </div>
+    <div style="float: right; margin-top: 10%; margin-right: 5%;">
+        <!-- <img src="close-button.png" alt=""> -->
+        <form action="">
+            <label for=""></label>
+            <label for="" class="inputlabel" style="color: rgb(255, 255, 255);display: block; font-size:xx-large; font-family:monospace; font-weight: 550; ;"> &emsp;  &emsp; Username</label>
+            <input type="text" id="widgetu762_input" name="login"  placeholder="" style="opacity: 50%; box-shadow: rgb(255, 255, 255); box-sizing: border-box; width: 300px;  height: 30px;"><br><br>
+            <label for="" class="inputlabel" style="color: rgb(255, 255, 255);display: block; font-size:xx-large; font-family:monospace; font-weight: 550; ;"> &emsp;  &emsp; Password</label>
+            <input type="text" id="widgetu753_input" name="pass" placeholder="" style="opacity: 50%; box-shadow: rgb(255, 255, 255); box-sizing: border-box; width: 300px; height: 30px;"><br><br><br>
+            <img src="log-in-button.png" alt="" style="width: 200px;   float: right; margin-right: 20%;" onclick="submitForm()">
+        </form>
+        <br><br>
+        <img src="rules-box.png" alt="" style="width: 300px; margin-top: 10%;"><br>
+         <img src="18-plus-box.png" alt="" style="width: 300px;">
+    </div>
+    <!-- <div >
+        <img src="rules-box.png" alt="">
+    </div> -->
+    <div >
+        <img src="logo.png" alt="" style="width: 50%;">
+    </div>
+
+    <!-- <form action="">
+        <label for="" class="inputlabel" style="color: rgb(255, 255, 255); ">Username</label><br>
+        <input type="text" placeholder=""><br>
+        <label for="" class="inputlabel" style="color: rgb(255, 255, 255); ">Password</label><br>
+        <input type="text" placeholder="">
+    </form> -->
+
+   <style>
+
+    
+           
+           body {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  background-size: cover;
+}
+    
+       
+       
+
+   </style>
+   <script>
+    const electron = require('electron');
+    const {ipcRenderer} = electron;  
+     function submitForm(){
+     // e.preventDefault();
+      const loginid = document.querySelector('#widgetu762_input').value;
+      const passwd = document.querySelector('#widgetu753_input').value;
+      var uobj = new Object();
+      uobj.uname = loginid;
+      uobj.passw = passwd;
+      uobj= JSON.stringify(uobj);
+      
+      console.log('loginid: '+loginid+' pass: '+passwd);
+      ipcRenderer.send('login', uobj);
+      
+      
+     // ipcRenderer.on()
+    }
+    
+  </script>
+</body>
+</html>
