@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Screen</title>
+
+    <style>
+        body {
+            background-image: url(background.png);
+            overflow: hidden;
+            background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+            /* background-size: cover; */
+        }
+        p{
+            align="center";
+        }
+        /* .outer {
+            position: relative;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 75%;
+        } */
+        #u344
+        {
+           /* z-index: 163;
+    width: 419px;
+    background-color: transparent;
+    position: fixed;
+    margin-right: auto;
+    margin-top: 20%;
+    left: 36%; */
+margin-left: 26%;
+margin-top:0.3;
+       }
+
+         #u384
+        /* {
+            z-index: 165;
+            width: 284px;
+            background-color: transparent;
+            position: relative;
+            margin-right: -10000px;
+            margin-top: -230px;
+            left: 420px; */
+        }
+
+        .inner {
+            position: fixed;
+    top: 10%;
+    height: 28%;
+    left: 42.5%;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" type="text/javascript"></script>
+        <script src="scripts/Winwheel.js" type="text/javascript"></script>
+        <script src="scripts/print.min.js" type="text/javascript"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+    <script type="text/javascript">
+        // Update the 'nojs'/'js' class on the html node
+        var boxnow = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var boxall = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var blinkbanner;
+        var coinrate = 10;
+        var totalbet = 0;
+        var winNumber;
+        var winmultipler = 9;
+        var angleInDegrees = 0;
+
+        var thiswin;
+        var angleWheelRotate;
+        var allowbid = false;
+        var uname, newgameid;
+        var joker = false;
+        var currentBal, userBal;
+        var r1;
+
+
+        const electron = require('electron');
+        const { ipcRenderer } = electron;
+
+        ipcRenderer.on('timer', function (e, countdown) {
+            // console.log(countdown);
+            if (countdown < 20 || currentBal == null || currentBal == undefined || uname == undefined) {
+                allowbid = false;
+            }
+
+            if (countdown < 20) {
+
+                document.getElementById("timerid").innerHTML = "wait";
+                var buzzaudio = new Audio('assets/buzzer.mp3');  // Create audio object and load tick.mp3 file.
+
+                // function playaudiobuzzSound()
+                // {
+                //     // Stop and rewind the sound if it already happens to be playing.
+                //     buzzaudio.pause();
+                //     buzzaudio.currentTime = 0;
+
+                //     // Play the sound.
+                //     buzzaudio.play();
+                //     playonce = false;
+                // }
+                // if(playonce == true){
+                // playaudiobuzzSound();
+
+                // }
+            }
+            else {
+                let ct = countdown - 20;
+               // var seconds=seconds_to_mins(ct)
+                // document.getElementById("timerid").innerHTML = seconds;
+                 document.getElementById("timerid").innerHTML = ct;
+            }
+            if (countdown < 115 && countdown > 20 && currentBal != null && currentBal != undefined && uname != undefined) {
+                allowbid = true;
+
+            }
+            if (countdown == 20) {
+                console.log(boxall);
+                savegame();
+            }
+        })
+        function seconds_to_mins(ct)
+        { // day, h, m and s
+        var minutes  = Math.floor(ct / (60));
+        ct -= minutes * (60);
+        return ("0"+minutes+":"+ct);
+        }
+        ipcRenderer.on('uname', function (event, usrname) {
+            uname = usrname;
+            console.log("uname at main",uname)
+        });
+        console.log("Welcome: " + uname);
+        ipcRenderer.on('lastwinsare', function (e, winns) {
+            // console.log(winns);
+            document.getElementById("u746-4").innerHTML = winns;
+            //u746-4
+        })
+        ipcRenderer.on('joker', function (e, jokerserv) {
+            joker = jokerserv;
+        });
+        ipcRenderer.on('newgameid', function (e, gameid) {
+             console.log('game id '+gameid);
+            newgameid = gameid;
+            document.getElementById("u499-4").innerHTML = "Game: " + gameid;
+        });
+        ipcRenderer.on('ucoins', function (e, bal) {
+            // console.log('player balance: '+bal);
+            userBal = bal;
+            document.getElementById("totalbal").innerHTML = bal;
+        });
+        ipcRenderer.on('winno', function (e, wnno) {
+             console.log('winner no at wheel rotation: ' +wnno);
+            winNumber = wnno;
+            // blinkbanner();
+            wheelAngle(winNumber);
+
+        });
+        document.documentElement.className = document.documentElement.className.replace(/\bnojs\b/g, 'js');
+        Array.prototype.SumArray = function (arr) {
+            var sum = [];
+            if (arr != null && this.length == arr.length) {
+                for (var i = 0; i < arr.length; i++) {
+                    sum.push(this[i] + arr[i]);
+                }
+            }
+
+            return sum;
+        }
+        // Check that all required assets are uploaded and up-to-date
+       
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="scripts/jquery.fortune.min.js"></script>
+</head>
+
+<body>
+
+    <!-- container start -->
+    <div class="cont">
+        <!-- row 1 start -->
+        <div class="row">
+            <!-- col1 -->
+            <div class="col-md-3">
+                <div class="row" style="margin-top: 10%; position: relative; margin-right: 7%; margin-left: 10%;">
+                    <p id="u499-4" style="display:none">Game ID</p>
+                    <img src="text/text-score.png" alt="" style="height: 30px; margin-left: 30%;">
+                    <img src="score-time_button.png"  alt=""  style="width: 100% ; position: relative;">
+                    <p id="totalbal" style="position: fixed;  font-weight: bold; color:black ; margin-left:7%; margin-top:3%;font-size:23px;">Balance</p>
+                </div>
+                <div class="row" style="margin-top: 10%; position: relative; margin-right: 7%; margin-left: 10%;">
+                    <img src="text/text-time.png" alt="" style="height: 30px; margin-left: 30%;">
+                    <img src="score-time_button.png"  alt="" style="width: 100%;">
+                    <p id="timerid" style="position: absolute;  font-family: 'digital-7', sans-serif;  font-weight: bold; color:black ; margin-left:40%; text-align:center; margin-top:15%;font-size:23px;">   Timer</p>
+                </div>
+                <div class="row" style="margin-top: 10%;  ">
+                    <img src="chips/chips-background-left.png" alt="" style="width: 100%; ">
+                    <img src="chips/withstroke/chip-10-withstroke.png" alt="" style="position: fixed; float: left; width: 4%; margin-top: 0.7%; margin-left: 2.5%;"  id="buttonu254" onclick="coinrater('buttonu254')">
+                    <img src="chips/withstroke/chip-20-withstroke.png" alt="" style="position: fixed; float: left; width: 4%; margin-top: 0.7%; margin-left: 7.5%;"  id="buttonu197" onclick="coinrater('buttonu197')">
+                    <img src="chips/withstroke/chip-50-withstroke.png" alt="" style="position: fixed; float: left; width: 4%; margin-top: 0.7%; margin-left: 12.5%;"  id="buttonu196" onclick="coinrater('buttonu196')">
+                    <img src="chips/withstroke/chip-100-withstroke.png" alt="" style="position: fixed; float: left; width: 4%; margin-top: 0.7%; margin-left: 17.5%;" id="buttonu195" onclick="coinrater('buttonu195')">
+                </div>
+            </div>
+
+            <!-- col2 -->
+            <div class="col-md-6">
+                <img src="pin options/4.png" id="upin_img" alt="" style="margin-left: 24.7%; position: fixed;">
+                <div class="wheel" style="margin-top:2%;" >
+                    
+                    <div  id="u344"><!-- image -->
+                    <canvas class="block" id="u344_img"  width="430" height="430" ></canvas>
+                     <!-- <img src="wheel_outer.png" id="u344_img" alt="" class="outer"> -->
+                    </div>
+                   
+                    <div  id="u384">
+                    <!-- <canvas class="block" id="u384_img" width="284" height="284" style=" position: fixed;top: 9.8%;left: 43.111%; height:29%" ></canvas> -->
+                     <img src="wheel_inner.png" id="u384_img" alt="" style = " position: fixed; top: 13.6%;height: 31.7%;left: 44.2%; ">
+                    </div>
+                    <p id="last_winner" style="display:none"></p>
+                   
+                </div>
+            </div>
+
+            <!-- col3 -->
+            <div class="col-md-3">
+                <div class="row" style="margin-top: 10%;  position: relative; margin-right: 10%; margin-left: 7%;">
+                    <img src="text/text-winner.png" alt="" style="height: 30px; margin-left: 22%;">
+                    <img src="score-time_button.png" alt="" style="width: 100%;">
+                    <p id="lastwin" style="position: fixed; color:black ; margin-left:8%; margin-top:3%;font-size:23px; font-weight:bold;">0</p>
+                </div>
+                <div class="row" style="margin-top: 10%; margin-right: 10%; margin-left: 7%;">
+                    <img src="text/text-last-10-data.png" alt="" style="height: 30px; margin-left: 8%;">
+                    <img src="score-time_button.png" alt="" style="width: 100%;">
+                    <p id="u746-4" style="position: fixed; color:black ; margin-left:2%; margin-top:3%;font-size:23px;font-weight:bold;"></p>
+                </div>
+                <div class="row" style="margin-top: 10%;">
+                    <img src="chips/chips-background-right.png" alt="" style="width: 100%; ">
+                    <img src="chips/withstroke/chip-500-withstroke.png" id="buttonu194" alt="" style="position: fixed; float: right; width: 4%; margin-top: 0.7%; margin-left: 4.5%;" onclick="coinrater('buttonu194')">
+                    <img src="chips/withstroke/chip-1000-withstroke.png" id="buttonu193" alt="" style="position: fixed; float: right; width: 4%; margin-top: 0.7%; margin-left: 9.5%;" onclick="coinrater('buttonu193')">
+                    <img src="chips/withstroke/chip-2000-withstroke.png" id="buttonu198" alt="" style="position: fixed; float: right; width: 4%; margin-top: 0.7%; margin-left: 14.5%;" onclick="coinrater('buttonu198')" >
+                    <img src="chips/withstroke/chip-5000-withstroke.png" id="buttonu199"  alt="" style="position: fixed; float: right; width: 4%; margin-top: 0.7%; margin-left: 19.5%;" onclick="coinrater('buttonu199')">
+
+                </div>
+
+            </div>
+           
+        </div>
+        <img src="treasure-chest.png" alt="" style="position: fixed; top: 28%; width: 58%; left: 23%;">
+    <div class="row"style="margin-top: 17%; position: relative; ">
+            <img src="fun-target-arc.png" alt="" style="position: fixed; top: 57%; width: 101%;" height="22%">
+            <img src="bottom part/print-button_red.png" alt="" style="position: fixed; width: 13%; top: 70%;">
+            <img src="bottom part/cancel-button_red.png" alt="" style="position: fixed; width: 13%; top: 70%; right: 0%;">
+        </div>
+        <!-- row 1 end -->
+
+
+        <!-- row 2 start -->
+        <div class="row" style="margin-top: -7%; position: fixed;">
+
+
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" id="u604_img" style="width: 100%;">
+                <p id="nowone" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/1_button_red.png" alt="" id="buttonu957" onclick="boxes('buttonu957')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt=""  style="width: 100%;">
+                <p id="nowtwo" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/2_button_red.png" alt="" id="buttonu959" onclick="boxes('buttonu959')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="nowthree" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/3_button_red.png" alt="" id="buttonu961" onclick="boxes('buttonu961')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="nowfour" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/4_button_red.png" alt="" id="buttonu963" onclick="boxes('buttonu963')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="nowfive" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/5_button_red.png" alt="" id="buttonu965" onclick="boxes('buttonu965')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="nowsix" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/6_button_red.png" alt="" id="buttonu967" onclick="boxes('buttonu967')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="nowseven" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/7_button_red.png" alt="" id="buttonu969" onclick="boxes('buttonu969')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="noweight" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/8_button_red.png" alt="" id="buttonu971" onclick="boxes('buttonu971')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="nownine" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/9_button_red.png" alt="" id="buttonu973" onclick="boxes('buttonu973')" style="width: 60%; margin-left:20% ;">
+            </div>
+            <div class="col">
+                <img src="bottom part/antique_box.png" alt="" style="width: 100%;">
+                <p id="nowzero" style="margin-left:25%; margin-top:-28%;font-size:23px; font-weight: bold; position:absolute; color:black ;"></p>
+                <img src="bottom part/0-9-buttons-red/0_button_red.png" alt="" id="buttonu975" onclick="boxes('buttonu975')" style="width: 60%; margin-left:20% ;">
+            </div>
+        </div>
+        <!-- row 2 end -->
+
+        <!-- row 3 start -->
+        <div class="row" style="position: fixed; margin-top: 1%;display:flex">
+            <img src="bottom part/left-bottom-button_red.png" alt="" style="height: 30px;margin-left:0.7%; margin-top: 1%;">
+            <p  id="gamebalance" style="height: 30px;margin-left:-5.3%; margin-top: 1%; margin-right:7% ;font-weight:2px;color:white">Game Bal</p>
+            <!-- <label for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> -->
+            <img src="bottom part/bottom-status-display-bar.png" alt="" style="height: 30px;  margin-top: 1%;" width="80%">
+            <!-- <label for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> -->
+            <img src="bottom part/exit-button_red.png" alt="" style="height: 30px; margin-top: 1%; margin-left:3%">
+        </div>
+        <!-- row 3 end -->
+
+        <!-- row 4 start -->
+        <div class="row">
+
+        </div>
+        <!-- row 4 end -->
+
+
+    </div>
+    <script>
+        function coinrater(bid) {
+    
+        switch(bid) {
+    
+            case 'buttonu199' : coinrate = 5000 ;break;
+            case 'buttonu198' : coinrate = 2000  ;break;
+            case 'buttonu193' : coinrate = 1000 ;break;
+            case 'buttonu194' : coinrate = 500  ;break;
+            case 'buttonu195' : coinrate = 100  ;break;
+            case 'buttonu196' : coinrate = 50   ;break;
+            case 'buttonu197' : coinrate = 20   ;break;
+            case 'buttonu254' : coinrate = 10   ;break;
+    
+        }
+        // console.log(coinrate);
+    };
+        </script>
+    <!-- container end -->
+    <script>
+        var jkrWheel = document.getElementById("u384_img");
+        var ctx = jkrWheel.getContext("2d");
+        make_base();
+        var base_image;
+        function make_base() {
+            base_image = new Image();
+           // base_image.src = 'wheel_inner.png';
+            base_image.onload = function () {
+                // test that the image was loaded
+                // or console.log if you prefer
+                ctx.drawImage(base_image, 0, 0);
+                ctx.save();
+            }
+        }
+        var options = {
+            prices: 20,
+            duration: 3000, // The amount of milliseconds the roulette to spin
+            min_spins: 8, // The minimum number of spins 
+            max_spins: 15, // The maximum number of spins
+            clockWise: false, // The direction the wheel will spin
+        };
+
+        var $r = $('#u384_img').fortune(options);
+        function zeromaker() {
+            boxnow.fill(0);
+            // console.log(boxnow);
+            updateboxes();
+            jkSpinkHandler();
+
+        }
+
+        var jkSpinkHandler = function () {
+            console.log('Handling SPin for Joker');
+            //var price = Math.floor((Math.random() * 8));
+            $r.spin(8).done(function (price) {
+
+            });
+        };
+
+        function savegame() {
+            boxall = boxall.SumArray(boxnow);//sumArray(boxall,boxnow);
+            console.log('boxall savegame:' + boxall);
+            var data = new Object();
+            data.uname = uname;
+            data.bet0 = boxall[0];
+            data.bet1 = boxall[1];
+            data.bet2 = boxall[2];
+            data.bet3 = boxall[3];
+            data.bet4 = boxall[4];
+            data.bet5 = boxall[5];
+            data.bet6 = boxall[6];
+            data.bet7 = boxall[7];
+            data.bet8 = boxall[8];
+            data.bet9 = boxall[9];
+            data = JSON.stringify(data);
+            ipcRenderer.send('savegame', data);
+
+        };
+        function boxes(bxid) {
+            // console.log(bxid);
+            if (allowbid == true) {
+                if (coinrate > currentBal) {
+                    alert('Low Balance');
+                }
+                else {
+                    switch (bxid) {
+                        case 'buttonu957': boxnow[1] = boxnow[1] + coinrate; break;
+                        case 'buttonu959': boxnow[2] = boxnow[2] + coinrate; break;
+                        case 'buttonu961': boxnow[3] = boxnow[3] + coinrate; break;
+                        case 'buttonu963': boxnow[4] = boxnow[4] + coinrate; break;
+                        case 'buttonu965': boxnow[5] = boxnow[5] + coinrate; break;
+                        case 'buttonu967': boxnow[6] = boxnow[6] + coinrate; break;
+                        case 'buttonu969': boxnow[7] = boxnow[7] + coinrate; break;
+                        case 'buttonu971': boxnow[8] = boxnow[8] + coinrate; break;
+                        case 'buttonu973': boxnow[9] = boxnow[9] + coinrate; break;
+                        case 'buttonu975': boxnow[0] = boxnow[0] + coinrate; break;
+                    }
+                }
+            }
+            updateboxes();
+        }
+        document.onkeypress = function (event) {
+            if (coinrate > currentBal) {
+                alert('Low Balance');
+            }
+            else {
+                if (allowbid == true) {
+                    var key_press = String.fromCharCode(event.keyCode);
+                    if (key_press == 0) {
+                        boxnow[0] = boxnow[0] + coinrate;
+                    }
+                    if (key_press == 1) {
+                        boxnow[1] = boxnow[1] + coinrate;
+                    }
+                    if (key_press == 2) {
+                        boxnow[2] = boxnow[2] + coinrate;
+                    }
+
+                    if (key_press == 3) {
+                        boxnow[3] = boxnow[3] + coinrate;
+                    }
+                    if (key_press == 4) {
+                        boxnow[4] = boxnow[4] + coinrate;
+                    }
+                    if (key_press == 5) {
+                        boxnow[5] = boxnow[5] + coinrate;
+                    }
+                    if (key_press == 6) {
+                        boxnow[6] = boxnow[6] + coinrate;
+                    }
+                    if (key_press == 7) {
+                        boxnow[7] = boxnow[7] + coinrate;
+                    }
+                    if (key_press == 8) {
+                        boxnow[8] = boxnow[8] + coinrate;
+                    }
+                    if (key_press == 9) {
+                        boxnow[9] = boxnow[9] + coinrate;
+                    }
+
+                }
+            }
+            updateboxes();
+        }
+        function updateboxes() {
+            document.getElementById('nowzero').innerHTML = boxnow[0];
+            document.getElementById('nowone').innerHTML = boxnow[1];
+            document.getElementById('nowtwo').innerHTML = boxnow[2];
+            document.getElementById('nowthree').innerHTML = boxnow[3];
+            document.getElementById('nowfour').innerHTML = boxnow[4];
+            document.getElementById('nowfive').innerHTML = boxnow[5];
+            document.getElementById('nowsix').innerHTML = boxnow[6];
+            document.getElementById('nowseven').innerHTML = boxnow[7];
+            document.getElementById('noweight').innerHTML = boxnow[8];
+            document.getElementById('nownine').innerHTML = boxnow[9];
+            totalbet = boxnow[0] + boxnow[1] + boxnow[2] + boxnow[3] + boxnow[4] + boxnow[5] + boxnow[6] + boxnow[7] + boxnow[8] + boxnow[9];
+             document.getElementById("gamebalance").innerHTML = totalbet;
+            currentBal = userBal - totalbet;
+            console.log('currentbal: ' + currentBal + 'userBal: ' + userBal);
+            document.getElementById("totalbal").innerHTML =currentBal;
+
+        }
+        function getBalance() {
+            ipcRenderer.send('getbalance', '');
+        };
+        var blinkbannerfor;
+        function blinkbannerf() {
+            var i = 0;
+            var toggle = 1;
+            blinkbannerfor = setTimeout(clearInterval(blinkbanner), 10000);
+
+
+
+         //  var u301 = document.getElementById('u301');
+
+           blinkbanner = setInterval(function () {
+                if (toggle == 1) {
+                    // u301.style.background = "transparent url('images/red_banner_dull.png?crc=4284056163') no-repeat center center";
+                //     u301.style.width = '560px';
+                //     u301.style.backgroundSize = 'contain';
+
+                //      toggle = 2;
+                // }
+                // else if (toggle == 2) {
+                //     u301.style.background = "transparent url('images/red_banner.png?crc=3984176938') no-repeat center center";
+                //     u301.style.width = '560px';
+                //     u301.style.backgroundSize = 'contain';
+                //     toggle = 1;
+
+                }
+            }, 300);
+
+
+        } blinkbannerf();
+    </script>
+    <script type="text/javascript">
+        //printing goes here
+
+
+        function setPrint() {
+            this.contentWindow.__container__ = this;
+            this.contentWindow.onbeforeunload = closePrint;
+            this.contentWindow.onafterprint = closePrint;
+            this.contentWindow.focus(); // Required for IE
+            this.contentWindow.print();
+        }
+        function formatAMPM() {
+            var d = new Date(),
+                minutes = d.getMinutes().toString().length == 1 ? '0' + d.getMinutes() : d.getMinutes(),
+                hours = d.getHours().toString().length == 1 ? '0' + d.getHours() : d.getHours(),
+                ampm = d.getHours() >= 12 ? 'pm' : 'am',
+                months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            return days[d.getDay()] + ' ' + months[d.getMonth()] + ' ' + d.getDate() + ' ' + d.getFullYear() + ' ' + hours + ':' + minutes + ampm;
+        }
+
+        function printPage() {
+            document.getElementById("invoice-POS").style.visibility = 'visible';
+
+            document.getElementById("date").innerHTML = formatAMPM();
+            document.getElementById("printgameid").innerHTML = 'GameID: ' + newgameid;
+            // <td class="Rate" id="Rate"></td>
+            //           <td class="payment" id="payment"></td>
+            var totalbamoun = document.getElementById("totalbetamount").innerHTML = totalbet;
+            var table = document.getElementById("betinTable");
+
+
+            //if(boxnow[a]> 0){
+            // document.getElementById("Rate").innerHTML = a+' X ';
+            // document.getElementById("payment").innerHTML = boxnow[a];
+            a = 0;
+            while (a < 10) {
+
+                var row = table.insertRow(0);
+                var cell1 = row.insertCell(0);
+                cell1.style.width = '160px';
+                // var cell2 = row.insertCell(1);
+
+                cell1.innerHTML = a + ' X ' + boxnow[a];
+
+                // cell2.innerHTML =  ; 
+                console.log('row created: ' + a);
+                a++;
+
+            }
+            //}
+
+            printJS('invoice-POS', 'html');
+            document.getElementById("invoice-POS").style.visibility = 'hidden';
+            // var printcontent = document.getElementById("printableArea").innerHTML;
+
+
+
+            /////
+            userBal = currentBal;
+            boxall = boxall.SumArray(boxnow);//sumArray(boxall,boxnow);
+            zeromaker();
+            console.log('boxall: ' + boxall);
+            a = 0;
+            while (a < 10) {
+                table.deleteRow(0);
+            }
+
+        }
+        function wheelAngle(numb) {
+            // console.log('winner no: '+numb);
+            switch (numb) {
+                // case 0: angleWheelRotate = '215'; break;
+                // case 1: angleWheelRotate = '251'; break;
+                // case 2: angleWheelRotate = '287'; break;
+                // case 3: angleWheelRotate = '323 '; break;
+                // case 4: angleWheelRotate = '358'; break;
+                // case 5: angleWheelRotate = '36 '; break;
+                // case 6: angleWheelRotate = '72 '; break;
+                // case 7: angleWheelRotate = '108'; break;
+                // case 8: angleWheelRotate = '144'; break;
+                // case 9: angleWheelRotate = '179'; break;
+                case 0: angleWheelRotate = ' 323'; break;
+                case 1: angleWheelRotate = ' 358'; break;
+                case 2: angleWheelRotate = ' 36'; break;
+                case 3: angleWheelRotate = ' 72  '; break;
+                case 4: angleWheelRotate = ' 108'; break;
+                case 5: angleWheelRotate = ' 144'; break;
+                case 6: angleWheelRotate = ' 179'; break;
+                case 7: angleWheelRotate = ' 215'; break;
+                case 8: angleWheelRotate = ' 251'; break;
+                case 9: angleWheelRotate = ' 287'; break;
+
+
+            }
+
+            startSpin(angleWheelRotate);
+
+
+        }
+
+        //popup wheel
+        var wheelSpinning = false;
+        var theWheel = new Winwheel({
+            'numSegments': 20,         // Specify number of segments.
+            'drawMode': 'image',   // drawMode must be set to image.
+            'drawText': false,      // Need to set this true if want code-drawn text on image wheels.
+            'canvasId': 'u344_img',
+            'segments':                // Define segments.
+                [
+                {'text' : '1'},
+                   {'text' : 'sp'},
+                   {'text' : '2'},
+                   {'text' : 'sp'},
+                   {'text' : '3'},
+                   {'text' : 'sp'},
+                   {'text' : '4'},
+                   {'text' : 'sp'},
+                   {'text' : '5'},
+                   {'text' : 'sp'},
+                   {'text' : '6'},
+                   {'text' : 'sp'},
+                   {'text' : '7'},
+                   {'text' : 'sp'},
+                   {'text' : '8'},
+                   {'text' : 'sp'},
+                   {'text' : '9'},
+                   {'text' : 'sp'},
+                   {'text' : '0'},
+                   {'text' : 'sp'},
+
+                ],
+            'animation':                   // Specify the animation to use.
+            {
+                'type': 'spinToStop',
+                'duration': 6,     // Duration in seconds.
+                'spins': 1,     // Number of complete spins.
+                'callbackFinished': spinstopped,
+                'clearTheCanvas': true,
+                'callbackSound': playSound,   // Function to call when the tick sound is to be triggered.
+                'soundTrigger': 'pin'        // Specify pins are to trigger the sound, the other option is 'segment'.
+            },
+            'pins':
+            {
+                'number': 10   // Number of pins. They space evenly around the wheel.
+            }
+        });
+
+        var audio = new Audio('assets/tick.mp3');  // Create audio object and load tick.mp3 file.
+
+        function playSound() {
+            // Stop and rewind the sound if it already happens to be playing.
+            audio.pause();
+            audio.currentTime = 0;
+
+            // Play the sound.
+            audio.play();
+        }
+        // Create new image object in memory.
+        var loadedImg = new Image();
+
+        // Create callback to execute once the image has finished loading.
+        loadedImg.onload = function () {
+            theWheel.wheelImage = loadedImg;    // Make wheelImage equal the loaded image object.
+            theWheel.draw();                    // Also call draw function to render the wheel.
+
+        }
+
+        // Set the image source, once complete this will trigger the onLoad callback (above).
+        loadedImg.src = "wheel_outer.png";
+
+
+        // Vars used by the code in this page to do power controls.
+        var wheelPower = 0;
+
+
+
+        // -------------------------------------------------------
+        // Click handler for spin button.
+        // -------------------------------------------------------
+        function startSpin(stopAt) {
+            console.log('spinning started');
+            // Ensure that spinning can't be clicked again while already running.
+            if (wheelSpinning == false) {
+                // Based on the power level selected adjust the number of spins for the wheel, the more times is has
+                // to rotate with the duration of the animation the quicker the wheel spins.
+                theWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+                theWheel.animation.spins = 6;
+                theWheel.animation.stopAngle = stopAt;
+                wheelSpinning = true;
+
+                // Begin the spin animation by calling startAnimation on the wheel object.
+                theWheel.startAnimation();
+                //// joker spinngin wheel goes here
+                drawStepok = function () {
+                    var i;
+                    angleInDegrees -= 302;
+
+
+                    console.log(angleInDegrees);
+                    console.log(joker);
+                    ctx.rotate(angleInDegrees);
+                    ctx.drawImage(base_image, 0, 0);
+
+
+
+
+                }
+                drawStepnook = function () {
+                    angleInDegrees -= 305;
+
+                    var i;
+
+                    console.log(angleInDegrees);
+                    console.log(joker);
+                    ctx.rotate(angleInDegrees);
+                    ctx.drawImage(base_image, base_image.width / 2, base_image.height / 2);
+
+
+
+                }
+                if (joker == false) {
+                    r1 = 1;
+                    drawStepok();
+                }
+                else {
+                    r1 = 2;
+                    drawStepnook();
+                }
+
+                // Set to true so that power can't be changed and spin button re-enabled during
+                // the current animation. The user will have to reset before spinning again.
+                wheelSpinning = true;
+
+
+                angleInDegrees = 0;
+
+            }
+        }
+
+
+
+        // -------------------------------------------------------
+        // Function for reset button.
+        // -------------------------------------------------------
+        function resetWheel() {
+            theWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+
+            theWheel.draw();                // Call draw to render changes to the wheel.
+            document.getElementById('last_winner').innerHTML = winNumber;
+            console.log('spinning restarted');
+            wheelSpinning = false;
+            var winMusic = new Audio('assets/coins_win.mp3');  // Create audio object and load tick.mp3 file.
+
+            function playSound() {
+                // Stop and rewind the sound if it already happens to be playing.
+                winMusic.pause();
+                winMusic.currentTime = 0;
+
+                // Play the sound.
+                winMusic.play();
+            }
+            playSound();
+            // clearInterval(blinkbannerfor);
+
+        }
+
+        // -------------------------------------------------------
+        // Called when the spin animation has finished by the callback feature of the wheel because I specified callback in the parameters.
+        // note the indicated segment is passed in as a parmeter as 99% of the time you will want to know this to inform the user of their prize.
+        // -------------------------------------------------------
+
+        function calculateBalance() {
+            // currentBal = currentBal- totalbet;
+            function calculateWinner(winNumber) {
+                console.log("winNumber=",winNumber)
+                if (joker == true) {
+                    winmultipler = 18;
+                } else {
+                    winmultipler = 9;
+                }
+
+                switch (winNumber) {
+                    case 0: thiswin = boxall[0] * winmultipler;
+                    case 1: thiswin = boxall[1] * winmultipler;
+                    case 2: thiswin = boxall[2] * winmultipler;
+                    case 3: thiswin = boxall[3] * winmultipler;
+                    case 4: thiswin = boxall[4] * winmultipler;
+                    case 5: thiswin = boxall[5] * winmultipler;
+                    case 6: thiswin = boxall[6] * winmultipler;
+                    case 7: thiswin = boxall[7] * winmultipler;
+                    case 8: thiswin = boxall[8] * winmultipler;
+                    case 9: thiswin = boxall[9] * winmultipler;
+                }
+                currentBal = currentBal + thiswin;
+                console.log('thiswin: ' + thiswin);
+                console.log('currentbal: ' + currentBal);
+                //update balance here
+                document.getElementById("lastwin").innerHTML = thiswin;
+                document.getElementById("totalbal").innerHTML = "Bal: " + currentBal;
+                //ipcRenderer.send('newbalance', currentBal);
+                updateBalance(currentBal);
+            };
+            calculateWinner(winNumber);
+        }
+        function updateBalance() {
+            boxall.fill(0);
+            var upcoins = new Object();
+            upcoins.uname = uname;
+            upcoins.ucoins = currentBal;
+            upcoins = JSON.stringify(upcoins);
+            console.log('upcoins: ' + upcoins);
+            ipcRenderer.send('upcoins', upcoins);
+            zeromaker();
+        }
+
+        function spinstopped() {
+            calculateBalance();
+
+            resetWheel();
+        }
+    </script>
+    <!-- <script type="text/javascript">
+        if (document.location.protocol != 'https:') document.write('\x3Cscript src="http://musecdn.businesscatalyst.com/scripts/4.0/jquery-1.8.3.min.js" type="text/javascript">\x3C/script>');
+    </script> -->
+    <script type="text/javascript">
+        window.jQuery || document.write('\x3Cscript src="scripts/jquery-1.8.3.min.js?crc=209076791" type="text/javascript">\x3C/script>');
+    </script>
+    <!-- Other scripts -->
+    <script type="text/javascript">
+        // Decide weather to suppress missing file error or not based on preference setting
+        var suppressMissingFileError = false
+    </script>
+    <!-- <script src="scripts/require.js?crc=4157109226" type="text/javascript" async
+        data-main="scripts/museconfig.js?crc=380897831"
+        onload="if (requirejs) requirejs.onError = function(requireType, requireModule) { if (requireType && requireType.toString && requireType.toString().indexOf && 0 <= requireType.toString().indexOf('#scripterror')) window.Muse.assets.check(); }"
+        onerror="window.Muse.assets.check();"></script> -->
+
+</body>
+
+</html>
+
+
+<!-- change ids of the following -->
